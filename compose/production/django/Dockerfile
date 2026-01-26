@@ -9,10 +9,13 @@ ARG BUILD_ENVIRONMENT=production
 
 # Install apt packages
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  # dependencies for building Python packages
-  build-essential \
-  # psycopg dependencies
-  libpq-dev
+    build-essential \
+    libpq-dev \
+    binutils \
+    libproj-dev \
+    gdal-bin \
+    libgdal-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 
 # Requirements are installed here to ensure they will be cached.
@@ -41,15 +44,15 @@ RUN addgroup --system django \
 
 # Install required system dependencies
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  # psycopg dependencies
-  libpq-dev \
-  # Translations dependencies
-  gettext \
-  # entrypoint
-  wait-for-it \
-  # cleaning up unused files
-  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-  && rm -rf /var/lib/apt/lists/*
+    libpq-dev \
+    wait-for-it \
+    gettext \
+    binutils \
+    libproj-dev \
+    gdal-bin \
+    libgdal-dev \
+    sudo git bash-completion nano ssh \
+    && rm -rf /var/lib/apt/lists/*
 
 # All absolute dir copies ignore workdir instruction. All relative dir copies are wrt to the workdir instruction
 # copy python dependency wheels from python-build-stage

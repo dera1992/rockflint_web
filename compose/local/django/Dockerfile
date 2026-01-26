@@ -8,10 +8,13 @@ ARG BUILD_ENVIRONMENT=local
 
 # Install apt packages
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  # dependencies for building Python packages
-  build-essential \
-  # psycopg dependencies
-  libpq-dev
+    build-essential \
+    libpq-dev \
+    binutils \
+    libproj-dev \
+    gdal-bin \
+    libgdal-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
@@ -36,7 +39,16 @@ WORKDIR ${APP_HOME}
 
 # devcontainer dependencies and utils
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  sudo git bash-completion nano ssh
+    libpq-dev \
+    wait-for-it \
+    gettext \
+    binutils \
+    libproj-dev \
+    gdal-bin \
+    libgdal-dev \
+    sudo git bash-completion nano ssh \
+    && rm -rf /var/lib/apt/lists/*
+
 
 # Create devcontainer user and add it to sudoers
 RUN groupadd --gid 1000 dev-user \

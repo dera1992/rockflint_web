@@ -96,8 +96,8 @@ LOCAL_APPS = [
     "rockflint_web.users",
     "rockflint_web.ads",
     "rockflint_web.agent",
+    "rockflint_web.customer",
     # "rockflint_web.core",
-    # "rockflint_web.customer",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

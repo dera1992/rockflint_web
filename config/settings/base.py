@@ -95,7 +95,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "rockflint_web.users",
     "rockflint_web.ads",
-    # "rockflint_web.agent",
+    "rockflint_web.agent",
     # "rockflint_web.core",
     # "rockflint_web.customer",
     # Your stuff: custom apps go here

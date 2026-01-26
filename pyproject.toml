@@ -119,6 +119,16 @@ select = [
   "RUF",
 ]
 ignore = [
+  "COM812",  # formatter conflict
+  "EM101",
+  "TRY003",
+  "RET504",
+  "N806",
+  "PLR2004",
+  "ERA001",
+  "E501",
+  "DJ001",   # allow null=True on strings (if you want)
+  "DJ012",   # Django ordering rule (optional)
   "S101", # Use of assert detected https://docs.astral.sh/ruff/rules/assert/
   "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
   "SIM102", # sometimes it's better to nest

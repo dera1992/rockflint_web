@@ -61,3 +61,15 @@ class Profile(models.Model):
     @property
     def fullname(self):
         return f"{self.first_name} {self.last_name}"
+
+
+class Vendor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="vendor")
+    company_name = models.CharField(max_length=255, blank=True)
+    phone_number = models.CharField(max_length=50, blank=True, null=True)
+    website = models.URLField(blank=True, null=True)
+    verified = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.company_name or self.user.username

@@ -8,6 +8,7 @@ from .forms import UserAdminChangeForm
 from .forms import UserAdminCreationForm
 from .models import Profile
 from .models import User
+from .models import Vendor
 
 if settings.DJANGO_ADMIN_FORCE_ALLAUTH:
     # Force the `admin` sign in process to go through the `django-allauth` workflow:
@@ -44,3 +45,9 @@ class UserAdmin(auth_admin.UserAdmin):
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ["user", "first_name", "last_name", "phone_number", "profile_image"]
+
+
+@admin.register(Vendor)
+class VendorAdmin(admin.ModelAdmin):
+    list_display = ("user", "company_name", "verified", "created")
+    search_fields = ("user__username", "company_name")

@@ -22,7 +22,6 @@ urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
-    path("users/", include("rockflint_web.users.urls", namespace="users")),
     path("auth/", include("rest_framework_social_oauth2.urls")),  # Social auth URLs
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here

@@ -2,7 +2,6 @@
 """Base settings to build other settings files upon."""
 
 import ssl
-from datetime import timedelta
 from pathlib import Path
 
 import environ
@@ -94,7 +93,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "rockflint_web.users",
-    # "rockflint_web.ads",
+    "rockflint_web.ads",
     # "rockflint_web.agent",
     # "rockflint_web.core",
     # "rockflint_web.customer",
@@ -379,12 +378,12 @@ SPECTACULAR_SETTINGS = {
 # ------------------------------------------------------------------------------
 
 
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": True,
-}
+# SIMPLE_JWT = {
+#     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+#     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+#     "ROTATE_REFRESH_TOKENS": False,
+#     "BLACKLIST_AFTER_ROTATION": True,
+# }
 
 # SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "your-google-client-id"
 # SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "your-google-client-secret"

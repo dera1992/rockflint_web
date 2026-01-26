@@ -3,6 +3,7 @@
 import uuid
 
 from django.contrib.auth import get_user_model
+from django.contrib.gis.db.models import PointField
 from django.db import models
 from django.db.models import JSONField
 from django.db.models import Q
@@ -136,6 +137,7 @@ class Listing(models.Model):
     state = models.ForeignKey(State, on_delete=models.PROTECT, related_name="listings")
     lga = models.ForeignKey(LGA, on_delete=models.PROTECT, related_name="listings")
     address = models.CharField(max_length=512, blank=True, null=True)
+    location = PointField(blank=True, null=True, srid=4326)
 
     # price & rent
     price = models.DecimalField(

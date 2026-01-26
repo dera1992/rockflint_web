@@ -3,6 +3,8 @@ from django.contrib.gis.geos import Point
 from django.db.models import Case
 from django.db.models import IntegerField
 from django.db.models import When
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import Point
 from django.utils import timezone
 from rest_framework import permissions
 from rest_framework import viewsets

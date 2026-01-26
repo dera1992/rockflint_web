@@ -16,4 +16,5 @@ urlpatterns = [
     path("", include(router.urls)),
     path("users/", include("rockflint_web.users.urls", namespace="users")),
     path("ads/", include("rockflint_web.ads.urls", namespace="ads")),
+    path("agent/", include("rockflint_web.agent.urls", namespace="agent")),
 ]

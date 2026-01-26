@@ -155,6 +155,16 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ["first_name", "last_name", "phone_number", "profile_image"]
 
+    def validate(self, attrs):
+        if self.instance is not None:
+            first_name = attrs.get("first_name", "").strip()
+            last_name = attrs.get("last_name", "").strip()
+            if not first_name or not last_name:
+                raise serializers.ValidationError(
+                    "First name and last name are required when updating a profile."
+                )
+        return attrs
+
     def update(self, instance, validated_data):
         instance.first_name = validated_data.get("first_name", instance.first_name)
         instance.last_name = validated_data.get("last_name", instance.last_name)

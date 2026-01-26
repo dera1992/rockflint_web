@@ -3,11 +3,14 @@ from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from datetime import timedelta
+
 from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.utils.http import urlsafe_base64_encode
+from django.urls import reverse
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.decorators import action
@@ -59,18 +62,21 @@ class UserRegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save(is_active=False)  # prevent login until activated
+            user.email_verification_expiry = timezone.now() + timedelta(hours=24)
+            user.save(update_fields=["email_verification_expiry"])
 
             # Generate activation link
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = account_activation_token.make_token(user)
-            activation_link = (
-                f"{request.scheme}://{request.get_host()}/activate/{uid}/{token}/"
+            activation_link = request.build_absolute_uri(
+                reverse("users:activate", kwargs={"uidb64": uid, "token": token})
             )
 
             # Send email
             send_mail(
                 "Activate your account",
-                f"Hi {user.first_name},\n\nPlease click the link below to activate your account:\n{activation_link}",
+                "Please click the link below to activate your account:\n"
+                f"{activation_link}",
                 settings.DEFAULT_FROM_EMAIL,
                 [user.email],
                 fail_silently=False,
@@ -158,6 +164,9 @@ class ProfileCreateUpdateView(generics.CreateAPIView, generics.UpdateAPIView):
         # Update profile
         return self.update(request, *args, **kwargs)
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 @receiver(post_save, sender=UserSocialAuth)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
@@ -194,7 +203,10 @@ class EmailVerification(APIView):
         try:
             # Validate the token and check expiration
             user = RefreshToken(token).user
-            if timezone.now() > user.email_verification_expiry:
+            if (
+                not user.email_verification_expiry
+                or timezone.now() > user.email_verification_expiry
+            ):
                 return Response(
                     {"error": "Verification token expired."},
                     status=status.HTTP_400_BAD_REQUEST,

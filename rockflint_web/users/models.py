@@ -22,6 +22,10 @@ class User(AbstractUser):
     last_name = None  # type: ignore[assignment]
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
+    email_verification_expiry = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
 
     def get_absolute_url(self) -> str:
         """Get URL for user's detail view.
@@ -41,8 +45,8 @@ def validate_phone_number(value):
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, blank=True, default="")
+    last_name = models.CharField(max_length=100, blank=True, default="")
     phone_number = models.CharField(
         max_length=15,
         blank=True,
@@ -73,3 +77,12 @@ class Vendor(models.Model):
 
     def __str__(self):
         return self.company_name or self.user.username
+
+
+class PasswordResetToken(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token = models.CharField(max_length=64, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Password reset token for {self.user}"

@@ -1,3 +1,5 @@
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import Point
 from django.db.models import Case
 from django.db.models import IntegerField
 from django.db.models import When
@@ -70,15 +72,30 @@ class ListingViewSet(viewsets.ModelViewSet):
             return queryset.filter(active=True)
         return queryset
 
-    def apply_promotion_ordering(self, queryset):
+    def apply_promotion_ordering(self, queryset, include_distance=False):
         now = timezone.now()
+        ordering = list(self.ordering)
+        if include_distance:
+            ordering = ["distance", *ordering]
         return queryset.annotate(
             is_promoted=Case(
                 When(promotion__active=True, promotion__promoted_until__gt=now, then=1),
                 default=0,
                 output_field=IntegerField(),
             ),
-        ).order_by("-is_promoted", *self.ordering)
+        ).order_by("-is_promoted", *ordering)
+
+    def get_distance_point(self):
+        latitude = self.request.query_params.get("latitude")
+        longitude = self.request.query_params.get("longitude")
+        if latitude in (None, "") or longitude in (None, ""):
+            return None
+        try:
+            latitude_value = float(latitude)
+            longitude_value = float(longitude)
+        except (TypeError, ValueError):
+            return None
+        return Point(longitude_value, latitude_value, srid=4326)
 
     def get_permissions(self):
         if self.action in ["create"]:
@@ -88,7 +105,13 @@ class ListingViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = self.base_queryset()
         queryset = self.apply_visibility_filters(queryset)
-        return self.apply_promotion_ordering(queryset)
+        point = self.get_distance_point()
+        if point:
+            queryset = queryset.annotate(distance=Distance("location", point))
+        return self.apply_promotion_ordering(
+            queryset,
+            include_distance=bool(point),
+        )
 
     def perform_create(self, serializer):
         # Ensure vendor exists

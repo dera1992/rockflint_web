@@ -89,6 +89,7 @@ THIRD_PARTY_APPS = [
     "oauth2_provider",
     "social_django",
     "rest_framework_social_oauth2",
+    "django_filters",
 ]
 
 LOCAL_APPS = [
@@ -360,6 +361,11 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': (
     #     'rest_framework.permissions.IsAuthenticated',
     # ),
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ),
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup

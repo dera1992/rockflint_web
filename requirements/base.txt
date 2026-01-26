@@ -28,3 +28,4 @@ djangorestframework-simplejwt==5.5.0  #https://github.com/jazzband/djangorestfra
 django-otp==1.6.0
 fido2==1.1.2
 django-rest-framework-social-oauth2
+django-filter

@@ -21,7 +21,7 @@ class User(AbstractUser):
     first_name = None  # type: ignore[assignment]
     last_name = None  # type: ignore[assignment]
     email = models.EmailField(unique=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     def get_absolute_url(self) -> str:
         """Get URL for user's detail view.

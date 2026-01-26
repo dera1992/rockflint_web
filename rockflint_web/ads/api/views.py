@@ -1,3 +1,5 @@
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import Point
 from django.db.models import Case
 from django.db.models import IntegerField
 from django.db.models import When
@@ -108,7 +110,10 @@ class ListingViewSet(viewsets.ModelViewSet):
         point = self.get_distance_point()
         if point:
             queryset = queryset.annotate(distance=Distance("location", point))
-        return self.apply_promotion_ordering(queryset, include_distance=bool(point))
+        return self.apply_promotion_ordering(
+            queryset,
+            include_distance=bool(point),
+        )
 
     def perform_create(self, serializer):
         # Ensure vendor exists

@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from rockflint_web.ads.models import Favorite
 from rockflint_web.ads.models import Listing
 from rockflint_web.ads.models import ListingImage
+from rockflint_web.ads.recommendations import parse_price_tolerance
+from rockflint_web.ads.recommendations import similar_listings_for
 
 from .filters import ListingFilter
 from .pagination import DefaultPagination
@@ -118,6 +120,28 @@ class ListingViewSet(viewsets.ModelViewSet):
         listing = self.get_object()
         qs = listing.reviews.select_related("user").all()
         return Response(ReviewSerializer(qs, many=True).data)
+
+    @action(detail=True, methods=["get"])
+    def recommendations(self, request, pk=None):
+        listing = self.get_object()
+        price_tolerance = parse_price_tolerance(
+            request.query_params.get("price_tolerance"),
+        )
+        limit = request.query_params.get("limit")
+        try:
+            limit_value = int(limit) if limit else 6
+        except (TypeError, ValueError):
+            limit_value = 6
+        if limit_value < 1:
+            limit_value = 1
+        if limit_value > 20:
+            limit_value = 20
+        qs = similar_listings_for(
+            listing,
+            price_tolerance=price_tolerance,
+            limit=limit_value,
+        )
+        return Response(ListingSerializer(qs, many=True).data)
 
     @action(
         detail=True,

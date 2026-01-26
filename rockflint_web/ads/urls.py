@@ -4,7 +4,6 @@ from rest_framework.routers import DefaultRouter
 
 from rockflint_web.ads.api.views import ListingImageViewSet
 from rockflint_web.ads.api.views import ListingViewSet
-
 app_name = "ads"
 
 router = DefaultRouter()

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from rockflint_web.ads.models import Listing
 from rockflint_web.users.models import Profile
 
 
@@ -20,3 +21,21 @@ class CustomerSerializer(serializers.ModelSerializer):
             "phone_number",
             "profile_image",
         )
+
+
+class ListingSummarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Listing
+        fields = (
+            "id",
+            "title",
+            "slug",
+            "price",
+            "active",
+            "created",
+        )
+
+
+class FavoriteListingSerializer(serializers.Serializer):
+    listing = ListingSummarySerializer()
+    saved_at = serializers.DateTimeField()

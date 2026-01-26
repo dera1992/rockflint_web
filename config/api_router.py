@@ -13,6 +13,7 @@ router.register("users", UserViewSet)
 
 app_name = "api"
 urlpatterns = [
-    # router.urls,
+    path("", include(router.urls)),
     path("users/", include("rockflint_web.users.urls", namespace="users")),
+    path("ads/", include("rockflint_web.ads.urls", namespace="ads")),
 ]

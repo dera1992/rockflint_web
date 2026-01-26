@@ -5,6 +5,9 @@ import uuid
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import JSONField
+from django.db.models import Q
+from django.core.validators import MaxValueValidator
+from django.core.validators import MinValueValidator
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 from django.utils import timezone
@@ -135,7 +138,12 @@ class Listing(models.Model):
     address = models.CharField(max_length=512, blank=True, null=True)
 
     # price & rent
-    price = models.DecimalField(max_digits=14, decimal_places=2, db_index=True)
+    price = models.DecimalField(
+        max_digits=14,
+        decimal_places=2,
+        db_index=True,
+        validators=[MinValueValidator(0)],
+    )
     rent_period = models.CharField(
         max_length=20,
         blank=True,
@@ -174,6 +182,12 @@ class Listing(models.Model):
             models.Index(fields=["price"]),
             models.Index(fields=["active"]),
         ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["vendor", "slug"],
+                name="ads_listing_vendor_slug_unique",
+            ),
+        ]
 
     def __str__(self):
         return f"{self.title} — {self.vendor}"
@@ -208,6 +222,13 @@ class ListingImage(models.Model):
 
     class Meta:
         ordering = ["order", "-is_primary", "id"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["listing"],
+                condition=Q(is_primary=True),
+                name="ads_listingimage_single_primary",
+            ),
+        ]
 
     def save(self, *args, **kwargs):
         # ensure there is only one primary image
@@ -248,7 +269,9 @@ class Review(models.Model):
     )
     title = models.CharField(max_length=200, blank=True)
     comment = models.TextField()
-    rating = models.PositiveSmallIntegerField()  # 1-5
+    rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+    )  # 1-5
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:

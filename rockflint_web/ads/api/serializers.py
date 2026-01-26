@@ -60,6 +60,29 @@ class ListingSerializer(serializers.ModelSerializer):
         return obj.primary_image
 
 
+class ListingWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Listing
+        fields = [
+            "id",
+            "title",
+            "slug",
+            "description",
+            "price",
+            "rent_period",
+            "bedrooms",
+            "bathrooms",
+            "area",
+            "attributes",
+            "features",
+            "category",
+            "offer",
+            "state",
+            "lga",
+            "address",
+        ]
+
+
 class ReviewSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
 

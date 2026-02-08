@@ -4,6 +4,9 @@ from rest_framework import serializers
 
 from rockflint_web.ads.models import Category
 from rockflint_web.ads.models import Feature
+from rockflint_web.ads.models import LGA
+from rockflint_web.ads.models import Offer
+from rockflint_web.ads.models import State
 from rockflint_web.ads.models import Listing
 from rockflint_web.ads.models import ListingImage
 from rockflint_web.ads.models import Review
@@ -25,6 +28,26 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ("id", "name", "slug")
+
+
+class OfferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Offer
+        fields = ("id", "name", "slug")
+
+
+class StateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = State
+        fields = ("id", "name")
+
+
+class LGASerializer(serializers.ModelSerializer):
+    state = StateSerializer(read_only=True)
+
+    class Meta:
+        model = LGA
+        fields = ("id", "name", "state")
 
 
 class ListingSerializer(serializers.ModelSerializer):

@@ -14,6 +14,13 @@ from rockflint_web.users.models import Vendor
 from .serializers import AgentActivitySerializer
 from .serializers import AgentDashboardSerializer
 from .serializers import VendorSerializer
+from .serializers import VendorSummarySerializer
+
+
+class PublicVendorViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = VendorSummarySerializer
+    queryset = Vendor.objects.select_related("user")
+    permission_classes = [permissions.AllowAny]
 
 
 class VendorViewSet(viewsets.ModelViewSet):

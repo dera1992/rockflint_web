@@ -12,19 +12,65 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 
+from rockflint_web.ads.models import Category
 from rockflint_web.ads.models import Favorite
+from rockflint_web.ads.models import Feature
 from rockflint_web.ads.models import Listing
 from rockflint_web.ads.models import ListingImage
+from rockflint_web.ads.models import LGA
+from rockflint_web.ads.models import Offer
+from rockflint_web.ads.models import State
 from rockflint_web.ads.recommendations import parse_price_tolerance
 from rockflint_web.ads.recommendations import similar_listings_for
 
 from .filters import ListingFilter
 from .pagination import DefaultPagination
 from .permissions import IsVendorOwnerOrReadOnly
+from .serializers import CategorySerializer
+from .serializers import FeatureSerializer
+from .serializers import LGASerializer
 from .serializers import ListingImageSerializer
 from .serializers import ListingSerializer
 from .serializers import ListingWriteSerializer
+from .serializers import OfferSerializer
 from .serializers import ReviewSerializer
+from .serializers import StateSerializer
+
+
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
+    permission_classes = [permissions.AllowAny]
+
+
+class OfferViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = OfferSerializer
+    queryset = Offer.objects.all()
+    permission_classes = [permissions.AllowAny]
+
+
+class StateViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = StateSerializer
+    queryset = State.objects.all()
+    permission_classes = [permissions.AllowAny]
+
+
+class LGAViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = LGASerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        queryset = LGA.objects.select_related("state")
+        state_id = self.request.query_params.get("state")
+        if state_id:
+            return queryset.filter(state_id=state_id)
+        return queryset
+
+
+class FeatureViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = FeatureSerializer
+    queryset = Feature.objects.all()
+    permission_classes = [permissions.AllowAny]
 
 
 class ListingViewSet(viewsets.ModelViewSet):

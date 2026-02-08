@@ -8,24 +8,28 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/search', label: 'Search' },
-  { href: '/agents', label: 'Agents' },
-  { href: '/dashboard', label: 'Dashboard' }
+  { href: '/search?offer=buy', label: 'Buy' },
+  { href: '/search?offer=rent', label: 'Rent' },
+  { href: '/search?offer=sell', label: 'Sell' },
+  { href: '/agents', label: 'Find an agent' }
 ];
 
 export function Navbar() {
   const pathname = usePathname();
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { user, clear } = useAuthStore();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const isDark = mounted && resolvedTheme === 'dark';
+  const isAuthenticated = mounted && Boolean(user);
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80">
@@ -48,10 +52,50 @@ export function Navbar() {
           ))}
         </nav>
         <div className="flex items-center gap-3">
-          <Link href="/auth/login" className="text-sm font-medium text-slate-600">
-            Sign in
-          </Link>
-          <Button size="sm">List your home</Button>
+          {isAuthenticated ? (
+            <div className="relative">
+              <Button size="sm" onClick={() => setMenuOpen((open) => !open)}>
+                List your property <span className="ml-1">🔽</span>
+              </Button>
+              {menuOpen ? (
+                <div className="absolute right-0 mt-2 w-48 rounded-xl border border-slate-200 bg-white p-2 shadow-lg dark:border-slate-700 dark:bg-slate-900">
+                  <Link
+                    href="/dashboard"
+                    className="block rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/dashboard/profile"
+                    className="block rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    type="button"
+                    className="block w-full rounded-lg px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+                    onClick={() => {
+                      clear();
+                      setMenuOpen(false);
+                    }}
+                  >
+                    Sign out
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <>
+              <Link href="/auth/login" className="text-sm font-medium text-slate-600">
+                Sign in
+              </Link>
+              <Link href="/auth/register">
+                <Button size="sm" variant="secondary">
+                  Register
+                </Button>
+              </Link>
+            </>
+          )}
           <button
             type="button"
             className="rounded-full border border-slate-200 p-2 text-slate-600 shadow-sm dark:border-slate-700 dark:text-slate-200"

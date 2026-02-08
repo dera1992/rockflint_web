@@ -12,7 +12,23 @@
 }
 
 body {
-  @apply bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+  @apply bg-white text-base font-normal text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  button {
+    font-size: 15px;
+    font-weight: 600;
+  }
 }
 
 .leaflet-container {

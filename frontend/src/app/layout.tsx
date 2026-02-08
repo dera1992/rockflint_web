@@ -1,9 +1,13 @@
 import type { Metadata } from 'next';
 
+import { Inter } from 'next/font/google';
+
 import { Footer } from '@/components/layout/footer';
 import { Navbar } from '@/components/layout/navbar';
 import { Providers } from '@/components/layout/providers';
 import '@/styles/globals.css';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'Rockflint Realty',
@@ -13,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className={inter.variable}>
         <Providers>
           <div className="flex min-h-screen flex-col">
             <Navbar />

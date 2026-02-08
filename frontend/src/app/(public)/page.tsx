@@ -73,6 +73,58 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="container grid gap-6 md:grid-cols-3">
+        {[
+          {
+            title: 'Buy a home',
+            description: 'Browse verified listings with transparent pricing and trusted agents.',
+            href: '/search?offer=buy'
+          },
+          {
+            title: 'Rent a home',
+            description: 'Find flexible rentals with up-to-date availability and virtual tours.',
+            href: '/search?offer=rent'
+          },
+          {
+            title: 'Sell your home',
+            description: 'List with confidence and reach qualified buyers faster.',
+            href: '/search?offer=sell'
+          }
+        ].map((card) => (
+          <div
+            key={card.title}
+            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
+          >
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{card.title}</h3>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{card.description}</p>
+            <div className="mt-4">
+              <Link href={card.href}>
+                <Button variant="secondary">Explore</Button>
+              </Link>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      <section className="container">
+        <div className="flex flex-col items-start gap-6 rounded-3xl border border-brand-100 bg-gradient-to-r from-brand-600 via-brand-500 to-brand-400 p-8 text-white shadow-xl md:flex-row md:items-center md:justify-between">
+          <div className="space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-50">
+              Ready to list?
+            </p>
+            <h2 className="text-2xl font-semibold md:text-3xl">
+              List your property and connect with high-intent buyers today.
+            </h2>
+            <p className="text-sm text-white/90">
+              Create a premium listing in minutes and manage viewings from your dashboard.
+            </p>
+          </div>
+          <Link href="/dashboard/listings/new">
+            <Button className="bg-white text-brand-700 hover:bg-brand-50">List your property</Button>
+          </Link>
+        </div>
+      </section>
+
       <section className="container space-y-6">
         <SectionHeading
           title="Featured listings"

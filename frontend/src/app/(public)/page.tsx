@@ -23,9 +23,17 @@ export default function HomePage() {
 
   return (
     <div className="space-y-16">
-      <section className="bg-gradient-to-br from-brand-50 via-white to-white py-16 dark:from-slate-950 dark:via-slate-950">
-        <div className="container grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-          <div className="space-y-6">
+      <section
+        className="relative overflow-hidden py-16"
+        style={{
+          backgroundImage:
+            "linear-gradient(120deg, rgba(239,246,255,0.92), rgba(255,255,255,0.88)), url('https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1600&q=80')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
+        <div className="container">
+          <div className="max-w-2xl space-y-6 rounded-3xl border border-white/70 bg-white/80 p-8 shadow-xl backdrop-blur dark:border-slate-800/60 dark:bg-slate-950/70">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-600">
               Premium real estate
             </p>
@@ -49,27 +57,6 @@ export default function HomePage() {
               <span>24/7 concierge support</span>
             </div>
           </div>
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xl dark:border-slate-800 dark:bg-slate-900">
-            <div className="space-y-4">
-              <p className="text-xs font-semibold uppercase text-slate-500">Top agents</p>
-              <div className="space-y-4">
-                {['BlueBay Realty', 'Urban Crest', 'Haven Group'].map((agent) => (
-                  <div
-                    key={agent}
-                    className="flex items-center justify-between rounded-xl border border-slate-100 p-4"
-                  >
-                    <div>
-                      <p className="text-sm font-semibold">{agent}</p>
-                      <p className="text-xs text-slate-500">Verified partner</p>
-                    </div>
-                    <Button size="sm" variant="secondary">
-                      View
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -78,46 +65,114 @@ export default function HomePage() {
           {
             title: 'Buy a home',
             description: 'Browse verified listings with transparent pricing and trusted agents.',
-            href: '/search?offer=buy'
+            href: '/search?offer=buy',
+            color: 'from-emerald-100 via-white to-white'
           },
           {
             title: 'Rent a home',
             description: 'Find flexible rentals with up-to-date availability and virtual tours.',
-            href: '/search?offer=rent'
+            href: '/search?offer=rent',
+            color: 'from-sky-100 via-white to-white'
           },
           {
             title: 'Sell your home',
             description: 'List with confidence and reach qualified buyers faster.',
-            href: '/search?offer=sell'
+            href: '/search?offer=sell',
+            color: 'from-rose-100 via-white to-white'
           }
-        ].map((card) => (
-          <div
-            key={card.title}
-            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
-          >
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{card.title}</h3>
-            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{card.description}</p>
-            <div className="mt-4">
-              <Link href={card.href}>
-                <Button variant="secondary">Explore</Button>
-              </Link>
+        ].map((card) => {
+          const gradientId = `${card.title.toLowerCase().replace(/\s+/g, '-')}-gradient`;
+
+          return (
+            <div
+              key={card.title}
+              className={`rounded-2xl border border-slate-200 bg-gradient-to-br ${card.color} p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:from-slate-900 dark:via-slate-900 dark:to-slate-950`}
+            >
+              <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-white/80 shadow-sm dark:bg-slate-900/80">
+                <svg
+                  viewBox="0 0 120 120"
+                  className="h-16 w-16"
+                  role="img"
+                  aria-hidden="true"
+                >
+                  <defs>
+                    <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#60a5fa" />
+                      <stop offset="100%" stopColor="#2563eb" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="42" cy="42" r="24" fill="#fde68a" />
+                  <rect
+                    x="36"
+                    y="54"
+                    width="48"
+                    height="40"
+                    rx="10"
+                    fill={`url(#${gradientId})`}
+                  />
+                  <path d="M28 56L60 30L92 56" fill="#1d4ed8" opacity="0.2" />
+                  <path
+                    d="M30 56L60 32L90 56"
+                    stroke="#1e3a8a"
+                    strokeWidth="6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <rect x="52" y="70" width="16" height="24" rx="6" fill="#fff" />
+                  <circle cx="92" cy="34" r="6" fill="#38bdf8" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                {card.title}
+              </h3>
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                {card.description}
+              </p>
+              <div className="mt-4">
+                <Link href={card.href}>
+                  <Button variant="secondary">Explore</Button>
+                </Link>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
 
       <section className="container">
-        <div className="flex flex-col items-start gap-6 rounded-3xl border border-brand-100 bg-gradient-to-r from-brand-600 via-brand-500 to-brand-400 p-8 text-white shadow-xl md:flex-row md:items-center md:justify-between">
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-50">
-              Ready to list?
-            </p>
-            <h2 className="text-2xl font-semibold md:text-3xl">
-              List your property and connect with high-intent buyers today.
-            </h2>
-            <p className="text-sm text-white/90">
-              Create a premium listing in minutes and manage viewings from your dashboard.
-            </p>
+        <div className="flex flex-col gap-6 rounded-3xl border border-brand-100 bg-gradient-to-r from-brand-600 via-brand-500 to-brand-400 p-8 text-white shadow-xl md:flex-row md:items-center md:justify-between">
+          <div className="flex items-start gap-6">
+            <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-white/15">
+              <svg
+                viewBox="0 0 140 140"
+                className="h-20 w-20"
+                role="img"
+                aria-hidden="true"
+              >
+                <circle cx="40" cy="42" r="22" fill="#fbbf24" />
+                <path d="M30 68L70 34L110 68" fill="#fff" opacity="0.2" />
+                <path
+                  d="M32 68L70 38L108 68"
+                  stroke="#fff"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <rect x="40" y="68" width="60" height="46" rx="12" fill="#fff" opacity="0.9" />
+                <rect x="62" y="84" width="16" height="30" rx="6" fill="#2563eb" />
+                <circle cx="108" cy="42" r="8" fill="#93c5fd" />
+              </svg>
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-50">
+                Ready to list?
+              </p>
+              <h2 className="text-2xl font-semibold md:text-3xl">
+                List your property and connect with high-intent buyers today.
+              </h2>
+              <p className="text-sm text-white/90">
+                Create a premium listing in minutes and manage viewings from your dashboard.
+              </p>
+            </div>
           </div>
           <Link href="/dashboard/listings/new">
             <Button className="bg-white text-brand-700 hover:bg-brand-50">List your property</Button>

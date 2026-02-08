@@ -27,23 +27,23 @@ export default function HomePage() {
         className="relative overflow-hidden py-16"
         style={{
           backgroundImage:
-            "linear-gradient(120deg, rgba(239,246,255,0.92), rgba(255,255,255,0.88)), url('https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1600&q=80')",
+            "linear-gradient(90deg, rgba(15,23,42,0.65) 0%, rgba(15,23,42,0.25) 45%, rgba(15,23,42,0) 75%), url('https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1600&q=80')",
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
       >
         <div className="container">
-          <div className="max-w-2xl space-y-6 rounded-3xl border border-white/70 bg-white/80 p-8 shadow-xl backdrop-blur dark:border-slate-800/60 dark:bg-slate-950/70">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-600">
+          <div className="max-w-2xl space-y-6 py-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-100">
               Premium real estate
             </p>
-            <h1 className="text-4xl font-semibold leading-tight text-slate-900 dark:text-white md:text-5xl">
+            <h1 className="text-4xl font-semibold leading-tight text-white md:text-5xl">
               Find the perfect home with a modern, intelligent search experience.
             </h1>
-            <p className="text-base text-slate-600 dark:text-slate-300">
+            <p className="text-base text-slate-100">
               Explore trusted listings, verify top agents, and schedule viewings with confidence.
             </p>
-            <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="rounded-xl border border-white/40 bg-white/95 p-4 shadow-lg">
               <div className="grid gap-3 md:grid-cols-4">
                 <Input placeholder="City, neighborhood" />
                 <Input placeholder="Min price" />
@@ -51,10 +51,12 @@ export default function HomePage() {
                 <Button>Search</Button>
               </div>
             </div>
-            <div className="flex flex-wrap gap-4 text-xs text-slate-500">
-              <span>Verified listings</span>
-              <span>Secure bookings</span>
-              <span>24/7 concierge support</span>
+            <div className="flex flex-wrap gap-4 text-xs text-slate-100">
+              <span className="rounded-full bg-white/15 px-3 py-1">Verified listings</span>
+              <span className="rounded-full bg-white/15 px-3 py-1">Secure bookings</span>
+              <span className="rounded-full bg-white/15 px-3 py-1">
+                24/7 concierge support
+              </span>
             </div>
           </div>
         </div>
@@ -139,44 +141,48 @@ export default function HomePage() {
       </section>
 
       <section className="container">
-        <div className="flex flex-col gap-6 rounded-3xl border border-brand-100 bg-gradient-to-r from-brand-600 via-brand-500 to-brand-400 p-8 text-white shadow-xl md:flex-row md:items-center md:justify-between">
-          <div className="flex items-start gap-6">
-            <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-white/15">
+        <div className="grid gap-10 rounded-3xl border border-brand-100 bg-gradient-to-r from-brand-100 via-brand-200 to-brand-300 p-8 text-slate-900 shadow-xl md:grid-cols-[1fr_1.1fr] md:items-center">
+          <div className="flex items-center justify-center">
+            <div className="flex h-64 w-full max-w-md items-center justify-center rounded-3xl bg-white/70 p-6 md:h-72">
               <svg
-                viewBox="0 0 140 140"
-                className="h-20 w-20"
+                viewBox="0 0 240 200"
+                className="h-full w-full"
                 role="img"
                 aria-hidden="true"
               >
-                <circle cx="40" cy="42" r="22" fill="#fbbf24" />
-                <path d="M30 68L70 34L110 68" fill="#fff" opacity="0.2" />
+                <circle cx="64" cy="48" r="28" fill="#fbbf24" />
+                <circle cx="190" cy="36" r="12" fill="#93c5fd" />
+                <path d="M40 110L120 50L200 110" fill="#fff" opacity="0.2" />
                 <path
-                  d="M32 68L70 38L108 68"
+                  d="M44 110L120 58L196 110"
                   stroke="#fff"
-                  strokeWidth="6"
+                  strokeWidth="8"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-                <rect x="40" y="68" width="60" height="46" rx="12" fill="#fff" opacity="0.9" />
-                <rect x="62" y="84" width="16" height="30" rx="6" fill="#2563eb" />
-                <circle cx="108" cy="42" r="8" fill="#93c5fd" />
+                <rect x="64" y="110" width="112" height="70" rx="16" fill="#fff" opacity="0.92" />
+                <rect x="104" y="130" width="32" height="50" rx="8" fill="#2563eb" />
+                <rect x="80" y="130" width="16" height="16" rx="4" fill="#c7d2fe" />
+                <rect x="144" y="130" width="16" height="16" rx="4" fill="#c7d2fe" />
               </svg>
             </div>
-            <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-50">
-                Ready to list?
-              </p>
-              <h2 className="text-2xl font-semibold md:text-3xl">
-                List your property and connect with high-intent buyers today.
-              </h2>
-              <p className="text-sm text-white/90">
-                Create a premium listing in minutes and manage viewings from your dashboard.
-              </p>
-            </div>
           </div>
-          <Link href="/dashboard/listings/new">
-            <Button className="bg-white text-brand-700 hover:bg-brand-50">List your property</Button>
-          </Link>
+          <div className="space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">
+              Ready to list?
+            </p>
+            <h2 className="text-2xl font-semibold md:text-3xl">
+              List your property and connect with high-intent buyers today.
+            </h2>
+            <p className="text-sm text-slate-700">
+              Create a premium listing in minutes and manage viewings from your dashboard.
+            </p>
+            <Link href="/dashboard/listings/new">
+              <Button className="bg-brand-600 text-white hover:bg-brand-700">
+                List your property
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
